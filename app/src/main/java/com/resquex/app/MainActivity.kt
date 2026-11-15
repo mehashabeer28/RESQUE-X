@@ -1,6 +1,8 @@
 package com.resquex.app
 
 import com.resquex.app.ui.ChatScreen
+import com.resquex.app.ui.NavigationScreen
+import com.resquex.app.ui.PulseEstimationScreen
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -60,6 +62,8 @@ private val EmergencyRed = Color(0xFFD62828)
 private val BackgroundColor = Color(0xFFF3F6FA)
 private val CardBlue = Color(0xFFE4EEFA)
 
+fun mutableStateof(value: Boolean) {}
+
 @Composable
 fun ResqueXHomeScreen() {
     var showEmergencyScreen by remember {
@@ -71,6 +75,13 @@ fun ResqueXHomeScreen() {
     var showChatScreen by remember {
         mutableStateOf(false)
     }
+    var showNavigationScreen by remember {
+        mutableStateOf(false)
+    }
+    var showPulseScreen by remember {
+        mutableStateOf(false)
+    }
+
 
     if (showChatScreen) {
         ChatScreen(
@@ -100,6 +111,18 @@ fun ResqueXHomeScreen() {
             onOpenChat = {
                 showFirstAidScreen = false
                 showChatScreen = true
+            }
+        )
+    } else if (showNavigationScreen) {
+        NavigationScreen(
+            onBack = {
+                showNavigationScreen = false
+            }
+        )
+    } else if (showPulseScreen) {
+        PulseEstimationScreen(
+            onBack = {
+                showPulseScreen = false
             }
         )
     } else {
@@ -236,13 +259,15 @@ fun ResqueXHomeScreen() {
             FeatureCard(
                 title = "Pulse Estimation",
                 description = "Experimental camera-based pulse feature",
-                backgroundColor = Color(0xFFFFF0D9)
+                backgroundColor = Color(0xFFFFF0D9),
+                onClick = { showPulseScreen = true }
             )
 
             FeatureCard(
                 title = "Emergency Navigation",
                 description = "Help locate nearby emergency facilities",
-                backgroundColor = Color(0xFFF0E6FA)
+                backgroundColor = Color(0xFFF0E6FA),
+                onClick = { showNavigationScreen = true }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
